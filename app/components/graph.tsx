@@ -12,8 +12,8 @@ export default function Graph() {
       dataFunction: getGraphData,
       labels: {
         Atom: {
-          label: 'Name',
-          group: 'TypeId'
+          label: 'name',
+          group: 'type'
         }
       },
       visConfig:{
@@ -26,8 +26,9 @@ export default function Graph() {
 
     let neoViz = new NeoVis(config);
     neoViz.render();
-
+    console.log()
     neoViz.registerOnEvent("completed" as NeoVisEvents, (e:any):void=>{
+
       neoViz.network?.on("selectNode", async (event) => {
         const internalId= event.nodes[0];
         const result = await fetch(`/api/getId/${internalId}`);

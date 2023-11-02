@@ -6,10 +6,10 @@ interface AtomResult {
     }
     
     type Atom =  {
-        TypeId: number;
-        Id: IdLowHigh;
-        Name: string;
-        Children?: Atom[]
+        type: number;
+        id: IdLowHigh;
+        name: string;
+        children?: Atom[]
     }
 
     type IdLowHigh = {
