@@ -1,7 +1,7 @@
 
 
 export default function ContextMenu({
-    xPos, yPos, nodeId, edgeId, nodeEditMenu, dependsMenu}
+    xPos, yPos, nodeId, edgeId, nodeEditMenu, dependsMenu, reDraw}
     : {
         xPos: number;
         yPos: number;
@@ -9,6 +9,7 @@ export default function ContextMenu({
         edgeId?: string;
         nodeEditMenu: ()=>void;
         dependsMenu: ()=>void;
+        reDraw: ()=>void
      }){
     //const router = useRouter();
     return(
@@ -38,8 +39,8 @@ export default function ContextMenu({
             method: "DELETE",
             body: JSON.stringify(data)
         })
-    
-        location.reload();
+        reDraw();
+        //location.reload();
     }
 }
 
