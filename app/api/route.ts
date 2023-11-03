@@ -12,15 +12,15 @@ export async function GET() {
 
 export async function POST(request: Request){
     //Allowed operations 'create node', 'create connection'
-    const result = await request.json();
+    const requestBody = await request.json();
     const errorResponse = new Response(new Blob(),{status: 400, statusText:"Bad Request"})
-    switch (result.action) {
+    switch (requestBody.action) {
         case 'create node':
-            if(!result.name || !result.type) return errorResponse;
-            const createNodeResult = await write<GraphResult>(`CREATE (a:Atom {name: '${result.name}', type:'${result.type}',id:randomUUID()}) return a`,{})
+            if(!requestBody.name || !requestBody.type) return errorResponse;
+            const createNodeResult = await write<GraphResult>(`CREATE (a:Atom {name: '${requestBody.name}', type:'${requestBody.type}',id:randomUUID()}) return a`,{})
             return Response.json(createNodeResult);
         case 'create connection':
-            if(!result.id || !result.dependsOnId) return errorResponse;
+            if(!requestBody.id || !requestBody.dependsOnId) return errorResponse;
             const connectResult = await write<GraphResult>(`MATCH(a: Atom {id:'test 100'})
             MATCH(b:Atom {name:'test 1030'})
             WHERE NOT (a)-[:dependsOn]->(b) 
@@ -28,12 +28,29 @@ export async function POST(request: Request){
             RETURN r`,{})
             return Response.json(connectResult);
         case 'edit node':
-            if(!result.id || !result.dependsOnId) return errorResponse;
-            const editResult = await write<GraphResult>(``,{})
+            if(!requestBody.id || !requestBody.name || !requestBody.type) return errorResponse;
+            const editResult = await write<GraphResult>(`MATCH (n) WHERE id(n)="${requestBody.id}" SET n.name = "${requestBody.name}", n.type="${requestBody.type}" RETURN n`,{})
             return Response.json(editResult);
         default: 
             return errorResponse;
-
     }
 }
 
+
+export async function DELETE(request: Request){
+    const requestBody = await request.json();
+    
+    const errorResponse = new Response(new Blob(),{status: 400, statusText:"Bad Request"})
+    if(!requestBody.id) return errorResponse;
+    switch (requestBody.action) {
+        case "node":
+            console.log(`MATCH (n) WHERE id(n)="${requestBody.id}" DETACH DELETE n`)
+            const deleteNodeRequest = await write<GraphResult>(`MATCH (n) WHERE id(n)=${requestBody.id} DETACH DELETE n`,{});
+            return Response.json(deleteNodeRequest);
+        case "edge":
+            const deleteEdgeRequest = await write<GraphResult>(`MATCH ()-[r]-() WHERE id(r)=${requestBody.id} DELETE r`,{});
+            return Response.json(deleteEdgeRequest);
+        default:
+            return errorResponse;
+    }
+}
