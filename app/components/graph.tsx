@@ -46,6 +46,11 @@ export default function Graph() {
           nodes:{
             font: "14px verdana black",
           },
+          edges:{
+            arrows: {
+              to: {enabled:true}
+            }
+          }
         },
         
       }
