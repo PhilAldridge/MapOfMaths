@@ -39,12 +39,21 @@ export default function Graph() {
         labels: {
           Atom: {
             label: 'name',
-            group: 'type'
+            group: 'type',
+            value: 'score',
+            size: 'score'
           }
         },
         visConfig:{
           nodes:{
-            font: "14px verdana black",
+            shape:'dot',
+            //font: "14px verdana black",
+            font: {
+              size: 14,
+              face: 'verdana',
+              color: 'black',
+              strokeWidth: 0
+            }
           },
           edges:{
             arrows: {
