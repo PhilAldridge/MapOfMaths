@@ -1,4 +1,4 @@
-import {read, write} from '../../lib/neo4j'
+import {read} from '../../lib/neo4j'
 
 
 
