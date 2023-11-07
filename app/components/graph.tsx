@@ -59,8 +59,9 @@ export default function Graph() {
             arrows: {
               to: {enabled:true}
             }
-          }
+          },
         },
+        hierarchical:true
         
       }
       setNeoviz(new NeoVis(config));
@@ -138,7 +139,7 @@ export default function Graph() {
       method: "POST",
       body: JSON.stringify(data)
     })
-    neoviz?.render();
+    reDraw();
   }
 
   function reDraw() {
