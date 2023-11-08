@@ -4,7 +4,7 @@ import { useRouter } from 'next/navigation'
 function LogoutButton() {
     const router = useRouter();
   return (
-        <button onClick={handleClick} className=''>Logout</button>
+        <button onClick={handleClick} className='hover:bg-opacity-30 p-2 rounded-md bg-violet-700 bg-opacity-0 h-10 align-middle my-auto'>Logout</button>
     )
 
   async function handleClick() {

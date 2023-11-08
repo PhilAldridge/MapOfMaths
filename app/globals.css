@@ -25,3 +25,23 @@ body {
     )
     rgb(var(--background-start-rgb));
 }
+
+* {
+  scrollbar-width: 12px;
+  scrollbar-color: #8f54a0 rgba(0,0,0,0);
+}
+
+/* Chrome, Edge, and Safari */
+*::-webkit-scrollbar {
+  width: 12px;
+}
+
+*::-webkit-scrollbar-track {
+  background: rgba(0,0,0,0);
+}
+
+*::-webkit-scrollbar-thumb {
+  background-color: #ff00f2;
+  border-radius: 10px;
+  border: 0px
+}

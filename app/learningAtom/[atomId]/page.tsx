@@ -1,6 +1,7 @@
 'use client'
 import Banner from "@/app/components/banner";
 import HomeButton from "@/app/components/homeButton";
+import QuestionGenerator from "@/app/components/questionGenerator";
 import React, { useEffect, useState } from "react";
 const colors: {[key:string]:string} = {
 	'Noun':"#d27dff",
@@ -45,6 +46,7 @@ export default function AtomPage({params}: {params: {atomId:string}}) {
                     
                 </>
             }
+            <QuestionGenerator atomId={params.atomId} />
         </div>
     )
 }
