@@ -1,13 +1,10 @@
-import React from 'react'
+'use client'
 import { useRouter } from 'next/navigation'
 
 function LogoutButton() {
     const router = useRouter();
   return (
-    <div className=' absolute w-full text-right z-50'>
-        <button onClick={handleClick} className=' active:translate-y-px active:brightness-75 m-4 border-2 rounded-md border-violet-900 bg-gradient-to-tr from-pink-400 to-violet-800 p-1 hover:from-pink-100 hover:to-violet-400 hover:text-black'>Logout</button>
-  
-    </div>
+        <button onClick={handleClick} className=''>Logout</button>
     )
 
   async function handleClick() {

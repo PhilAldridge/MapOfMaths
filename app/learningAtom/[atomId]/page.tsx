@@ -33,7 +33,6 @@ export default function AtomPage({params}: {params: {atomId:string}}) {
 
     return (
         <div className="p-4">
-            <HomeButton/>
             <Banner />
             {formatedAtom===undefined? 
                 <p>Loading...</p>

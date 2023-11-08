@@ -1,12 +1,12 @@
-import {read, readWholeGraph, write} from '../lib/neo4j'
+import {readWholeGraph, write} from '../lib/neo4j'
 
 interface GraphResult {
 //TODO check form neaded for regraph
 }
 
 export async function GET() {
-    const result = await readWholeGraph<GraphResult>(`MATCH (n)-[r]->(m) RETURN n,r,m`, {});
-    const result2 = await readWholeGraph<GraphResult>(`MATCH (n) WHERE NOT ()-[]->(n) RETURN n`,{})
+    const result = await readWholeGraph<GraphResult>(`MATCH (n:Atom)-[r:dependsOn]->(m) RETURN n,r,m`, {});
+    const result2 = await readWholeGraph<GraphResult>(`MATCH (n:Atom) WHERE NOT ()-[:dependsOn]->(n) RETURN n`,{})
     return Response.json([...result,...result2])
 }
 
