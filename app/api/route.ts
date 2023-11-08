@@ -37,7 +37,6 @@ export async function POST(request: Request){
 
 export async function DELETE(request: Request){
     const requestBody = await request.json();
-    
     const errorResponse = new Response(new Blob(),{status: 400, statusText:"Bad Request"})
     if(!requestBody.id) return errorResponse;
     switch (requestBody.action) {
@@ -47,6 +46,9 @@ export async function DELETE(request: Request){
         case "edge":
             const deleteEdgeRequest = await write<GraphResult>(`MATCH ()-[r]-() WHERE id(r)=${requestBody.id} DELETE r`,{});
             return Response.json(deleteEdgeRequest);
+        case "nodeexternalid":
+            const deleteNodeRequest2 = await write<GraphResult>(`MATCH (n {id:"${requestBody.id}"}) DETACH DELETE n`,{});
+            return Response.json(deleteNodeRequest2);
         default:
             return errorResponse;
     }
