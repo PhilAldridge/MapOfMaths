@@ -1,7 +1,6 @@
-import { useRouter } from 'next/navigation'
+import Link from 'next/link'
 
 function Banner() {
-    const router = useRouter();
   return (
     <div className='h-72  w-full text-center justify-center flex items-center font-bold tracking-wide bg-repeat bg-opacity-70' 
         style={{fontSize:"3.5rem", 
@@ -15,7 +14,7 @@ function Banner() {
                 WebkitMaskPositionX: '50%',
                 maskPosition: 'center'
             }}>
-        <span className='bg-clip-text text-transparent bg-gradient-to-r from-pink-700 to-violet-300 hover:bg-right hover:cursor-pointer' onClick={()=>{router.push('/')}} style={{backgroundSize: '150%', transition: 'all 0.5s linear'}}>
+        <Link href={'/'} className='bg-clip-text text-transparent bg-gradient-to-r from-pink-700 to-violet-300 hover:bg-right hover:cursor-pointer' style={{backgroundSize: '150%', transition: 'all 0.5s linear'}}>
             <span className="hover:text-6xl">M</span>
             <span className="hover:text-6xl">a</span>
             <span className="hover:text-6xl">p</span>
@@ -33,7 +32,7 @@ function Banner() {
             <span className="hover:text-6xl">c</span>
             <span className="hover:text-6xl">s</span>
 
-        </span>
+        </Link>
     </div>
       
   )
