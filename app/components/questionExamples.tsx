@@ -1,6 +1,7 @@
 'use client'
 import Link from 'next/link'
 import{useState, useEffect} from 'react'
+import ConcreteQuestion from './concreteQuestion'
 
 type DataExpected = {
     m: {
@@ -30,6 +31,7 @@ type QuestionVariable = {
 
 export default function QuestionExample({questionId}: {questionId:string}) {
     const [question, setQuestion] = useState<Sanitized>();
+    const [keyVal,setKeyVal] = useState(0);
 
     useEffect(()=>{
         const getQuestions =async () => {
@@ -46,23 +48,32 @@ export default function QuestionExample({questionId}: {questionId:string}) {
         getQuestions();
     },[questionId])
 
-
     return (
         <div className="p-2 rounded-xl border-2 border-slate-200 bg-slate-800">
             {question?.question? 
                 (<>
-                    <h1 className=" text-2xl mb-2">{question.question}</h1>
+                    <h1 className="text-slate-200 text-2xl mb-2">Question: <span className=' italic text-pink-100'>{question.question}</span></h1>
                     {question.atomName && <h2 className='text-xl mb-2 text-slate-300'>Checks: <Link className=' text-pink-300 hover:text-pink-200' href={'/learningAtom/'+question.atomId}>{question.atomName}</Link></h2>}
                     <h2 className='text-lg mb-2'>Try it:</h2>
-                    <div>
-
-                    </div>
+                   
+                    {
+                         <div>
+                            <ConcreteQuestion question={question.question} answer={question.answer} id={1} key={'concrete' + keyVal} />
+                            <ConcreteQuestion question={question.question} answer={question.answer} id={2} key={'concrete' + keyVal+1} />
+                            <ConcreteQuestion question={question.question} answer={question.answer} id={3} key={'concrete' + keyVal +2} />
+                         </div>
+                    }
+                    <div className='w-full text-center'><button onClick={changeQuestions} className="w-1/8 disabled:brightness-90 bg-gradient-to-r from-pink-500 to-violet-500 hover:brightness-110 active:brightness-90 p-2 w-fit mx-auto rounded-md active:translate-x-px">Generate new example questions</button></div>
                 </>)
                 :
                 (<h1 className=" text-2xl mb-2">Loading...</h1>)
             }
         </div>
     )
+    function changeQuestions() {
+        setKeyVal(keyVal+3)
+    }
+
     async function handleDelete(id:string) {
         await fetch('/api',{
             method: "DELETE",
@@ -95,98 +106,4 @@ export default function QuestionExample({questionId}: {questionId:string}) {
         
     }
 
-    function evaluateString(givenString:string): number {
-        givenString = givenString.replace(" ", "");
-
-        // array []
-        if(givenString[0]==='[') {
-            givenString = givenString.substring(1,givenString.length-1);
-            //regex commas not contained in brackets
-            const possibleValues = givenString.split(/,\s*(?![^()]*\))/g)
-            return evaluateString(possibleValues[Math.floor(Math.random()*possibleValues.length)])
-        }
-        
-        // number (regex number including decimals and negatives)
-        const numberPattern = /^-?\d+(\.\d+)?$/;
-        if(numberPattern.test(givenString)) return Number(givenString);
-
-        //randBetween NOT CORRECT NEEDS TO GET OUT OF BRACKET SAFELY
-        if(givenString.startsWith('randBetween(')) {
-            givenString = givenString.substring(12,givenString.length-1)
-            //regex commas not contained in brackets
-            const range = givenString.split(/,\s*(?![^()]*\))/g);
-            return getRandomInteger(evaluateString(range[0]), evaluateString(range[1]))
-        }
-
-        //sin, cos, tan NOT CORRECT NEEDS TO GET OUT OF BRACKET SAFELY
-        switch(givenString.slice(0,4)) {
-            case 'sin(':
-                return Math.sin(evaluateString(givenString.substring(4,givenString.length-1))*Math.PI/180)
-            case 'cos(':
-                return Math.cos(evaluateString(givenString.substring(4,givenString.length-1))*Math.PI/180)
-            case 'tan(':
-                return Math.tan(evaluateString(givenString.substring(4,givenString.length-1))*Math.PI/180)
-            default:
-                break;
-        }
-
-        //bracket
-        if(givenString.includes('(')) {
-            const textAndBrackets = findSubstringInBracket(givenString)
-            const updatedString = givenString.replace(textAndBrackets, evaluateString(textAndBrackets.substring(1,givenString.length-1)).toString())
-            return evaluateString(updatedString)
-        }
-
-        //operations
-        //power  NOT CORRECT WHAT IF BASE AND EXPONENT CONTAIN FUNCTIONS
-        if(givenString.includes('^')){
-            const splitString = givenString.split('^')
-            const superSplit = splitString[0].split(/[+\-*/^]/);
-            const base = superSplit[superSplit.length-1]
-            const exponent = splitString[1].split(/[+\-*/^]/)[0];
-            const fullPowerString = base+'^'+exponent;
-            const updatedString = givenString.replace(fullPowerString, Math.pow(Number(base), Number(exponent)).toString())
-            return evaluateString(updatedString);
-        }
-
-        //multiplydivide
-        if(givenString.includes('*') || givenString.includes('/')) {
-
-        }
-        
-        //variables????
-
-        //STRINGS????
-
-        return 0
-    }
-
-    function getRandomInteger(min:number, max:number):number {
-        min = Math.ceil(min);
-        max = Math.floor(max);
-        return Math.floor(Math.random() * (max - min + 1)) + min;
-      }
-
-    function findSubstringInBracket(fullString:string):string {
-        const startIndex = fullString.indexOf('(');
-        let endIndex = fullString.length-1;
-        let bracketDepth = 1;
-        for(let i = startIndex+1; i<fullString.length; i++){
-            if(bracketDepth === 0) {
-                endIndex = i;
-                break;
-            }
-            switch(fullString[i]){
-                case '(':
-                    bracketDepth++
-                    break;
-                case ')':
-                    bracketDepth--;
-                    break;
-                default:
-                    break;
-            }
-        }
-        return fullString.substring(startIndex,endIndex+1)
-    }
 }

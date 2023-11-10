@@ -10,8 +10,9 @@ function QuestionGenerator({atomId, updateList}: {atomId:string, updateList: ()=
         <h2 className="text-xl">Variables:</h2>
         <ul className="list-disc list-inside">
             <li>Variables are defined inside curly brackets</li>
-            <li>They can be defined using an array, e.g. {"{x=[1,2,3,4,5]}"}</li>
-            <li>Or with a function, e.g. {"{x=randBetween(1,5)} or {y=(x+z)/5}"}</li>
+            <li>They can be defined using an array, e.g. {"{$x=[1,2,3,4,5]}"}</li>
+            <li>Variables should only use a-z characters and should always be preceded by a $ sign</li>
+            <li>Or with a function, e.g. {"{$x=randBetween(1,5)} or {$y=($x+$z)/5}"}</li>
         </ul>
         <h3 className="text-xl">Functions:</h3>
         <ul className="list-disc list-inside">

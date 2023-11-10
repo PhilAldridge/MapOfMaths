@@ -47,6 +47,9 @@ export default function QuestionList({atomId, updateInitial}: {atomId:string, up
                     <p>There are no questions for this atom</p>
                 }
             </ul>
+            <div className='w-full text-center p-4'>
+            <Link href={'/question/byAtom/'+atomId} className='ml-auto bg-gradient-to-r from-pink-500 to-violet-500 hover:brightness-110 active:brightness-90 p-2 h-full w-fit rounded-md active:translate-x-px'>Try mixed questions</Link>
+              </div>                 
         </div>
     )
 
