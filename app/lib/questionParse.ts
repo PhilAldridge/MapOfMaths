@@ -22,7 +22,6 @@ export function createConcreteQuestion(question:string, answer:string): Concrete
     }
     results = calculateValues(results);
     results.forEach(result=>{
-        console.log(result)
         question = question.replace("{"+result.fullString+"}", result.value as string)
         answer = answer.replace("{"+result.fullString+"}", result.value as string)
     })

@@ -1,6 +1,13 @@
 import type { NextAuthOptions } from 'next-auth'
 import GitHubProvider from 'next-auth/providers/github'
 import CredentialsProvider from 'next-auth/providers/credentials'
+import { Session } from 'next-auth'
+
+type MySession= Session & {
+    user : {
+        role: string
+    }
+}
 
 export const options: NextAuthOptions = {
     providers: [
@@ -26,7 +33,7 @@ export const options: NextAuthOptions = {
                 // This is where you need to retrieve user data 
                 // to verify with credentials
                 // Docs: https://next-auth.js.org/configuration/providers/credentials
-                const user = { id: "42", name: "test", password: "test" }
+                const user = { id: "42", name: "test", password: "test" , role:"admin"}
 
                 if (credentials?.username === user.name && credentials?.password === user.password) {
                     return user
@@ -36,4 +43,19 @@ export const options: NextAuthOptions = {
             }
         })
     ],
+    /*callbacks: {
+        async jwt({token, user}){
+            if(user) {
+                token.id = user.id
+                token.role = user.role
+            } else {
+                token.role = "user"
+            }
+            return token
+        },
+        session({session, user}) {
+          session.user.role = "admin";
+          return session;
+        },
+      },*/
 }

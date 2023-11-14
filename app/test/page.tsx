@@ -3,7 +3,7 @@ import {createConcreteQuestion} from '@/app/lib/questionParse'
 
 
 function page() {
-    console.log(
+    (
         [//createConcreteQuestion("",""),
         //createConcreteQuestion("What is {$x=4} + {$y=5}?", "{$x+$y}"),
         //createConcreteQuestion("What is {$x+$y} - {$y=5}?", "{$x=randBetween(6,9)}"),

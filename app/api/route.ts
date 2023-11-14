@@ -1,16 +1,22 @@
 import {readWholeGraph, write} from '../lib/neo4j'
+import { authorisedUser } from '../lib/auth';
 
 interface GraphResult {
 //TODO check form neaded for regraph
 }
 
-export async function GET() {
+export async function GET(req: Request) {
     const result = await readWholeGraph<GraphResult>(`MATCH (n:Atom)-[r:dependsOn]->(m) RETURN n,r,m`, {});
     const result2 = await readWholeGraph<GraphResult>(`MATCH (n:Atom) WHERE NOT ()-[:dependsOn]->(n) RETURN n`,{})
     return Response.json([...result,...result2])
 }
 
 export async function POST(request: Request){
+    const authorized = await authorisedUser();
+    if(await !authorized){
+         return new Response(new Blob(),{status: 401, statusText:"You are not authorized to perform this action" });
+    }
+ 
     //Allowed operations 'create node', 'create connection'
     const requestBody = await request.json();
     const errorResponse = new Response(new Blob(),{status: 400, statusText:"Bad Request"})
@@ -36,6 +42,11 @@ export async function POST(request: Request){
 
 
 export async function DELETE(request: Request){
+    const authorized = await authorisedUser();
+    if(await !authorized){
+         return new Response(new Blob(),{status: 401, statusText:"You are not authorized to perform this action" });
+    }
+    
     const requestBody = await request.json();
     const errorResponse = new Response(new Blob(),{status: 400, statusText:"Bad Request"})
     if(!requestBody.id) return errorResponse;
