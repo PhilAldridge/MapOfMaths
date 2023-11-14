@@ -71,6 +71,10 @@ export default function Graph() {
       }
       const neoviz = new NeoVis(config)
       neoviz.render();
+      setNeoviz(neoviz);
+    },[])
+
+    if(neoviz){
       neoviz.registerOnEvent("completed" as NeoVisEvents, (e:any):void=>{
         neoviz.network?.on("oncontext", async(event) => {
           setEvent(event as NeoVisClickEvent)
@@ -87,11 +91,6 @@ export default function Graph() {
           setEditting(false);
         })
       })
-      setNeoviz(neoviz);
-    },[])
-
-    if(neoviz){
-      
     }
   return (
     <>
