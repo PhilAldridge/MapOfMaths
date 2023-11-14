@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 
 export default function EditMenu({xPos, yPos, nodeId, reDraw}:{xPos:number, yPos:number,nodeId?:string, reDraw: ()=> void}) {
     const [name, setName] = useState("");
-    const [type, setType]= useState("");
+    const [type, setType]= useState("Noun");
     useEffect(()=>{
         if(nodeId) {
             getNodeDetails(nodeId);
@@ -20,7 +20,7 @@ export default function EditMenu({xPos, yPos, nodeId, reDraw}:{xPos:number, yPos
         <input className="rounded-md text-black w-full h-7" type="text" id="name" name="name" value={name} onChange={(e)=>setName(e.target.value)}></input></p>
         <p className="p-2"><label htmlFor="type">Type: </label>
         <select className=" text-black w-full rounded-md h-7" id="type" name="type" onChange={(e)=>setType(e.target.value)} value={type}>
-            <option value="Noun">Noun</option>
+            <option defaultChecked value="Noun">Noun</option>
             <option value="Single-Dimension">Single-Dimension</option>
             <option value="Transformation">Transformation</option>
             <option value="Correlated feature">Correlated feature</option>
