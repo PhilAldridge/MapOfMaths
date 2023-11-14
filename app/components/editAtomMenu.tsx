@@ -3,11 +3,13 @@ import { useEffect, useState } from "react";
 
 export default function EditMenu({xPos, yPos, nodeId, reDraw}:{xPos:number, yPos:number,nodeId?:string, reDraw: ()=> void}) {
     const [name, setName] = useState("");
-    const [type, setType]= useState("Noun");
+    const [type, setType]= useState("");
     useEffect(()=>{
         if(nodeId) {
             getNodeDetails(nodeId);
     
+        } else {
+            setType("Noun");
         }
     }, [nodeId]);
 
