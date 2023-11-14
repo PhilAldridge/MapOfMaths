@@ -19,7 +19,6 @@ export async function verifyToken(token:string):Promise<boolean>{
 
 export async function authorisedUser():Promise<boolean> {
     const session = await getServerSession();
-    console.log(session)
     if(!session || !session.user?.email || session?.user.email !== "phil_mj12@yahoo.co.uk") {
         return false
     }

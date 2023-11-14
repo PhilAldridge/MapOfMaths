@@ -3,6 +3,8 @@ import Banner from "@/app/components/banner";
 import QuestionGenerator from "@/app/components/questionGenerator";
 import QuestionList from "@/app/components/questionsList";
 import React, { useEffect, useState } from "react";
+import { SessionProvider } from 'next-auth/react';
+
 const colors: {[key:string]:string} = {
 	'Noun':"#d27dff",
 	'Single-Dimension':"#ffa000",
@@ -15,6 +17,8 @@ const colors: {[key:string]:string} = {
 export default function AtomPage({params}: {params: {atomId:string}}) {
     const [formatedAtom, setFormatedAtom] = useState<Atom | null>(null);
     const [updateInitial, setUpdateInitial] = useState(0);
+
+
     useEffect(() =>{            
             const getData = async () =>  {
                 const data = await fetch(`/api/${params.atomId}`);
@@ -57,8 +61,10 @@ export default function AtomPage({params}: {params: {atomId:string}}) {
         <div className="p-4 flex flex-col gap-8">
             <Banner />
             {child}
+            <SessionProvider>
             <QuestionList atomId={params.atomId} updateInitial={updateInitial}/>
             <QuestionGenerator atomId={params.atomId} updateList={updateQuestionList} />
+            </SessionProvider>
         </div>
     )
 

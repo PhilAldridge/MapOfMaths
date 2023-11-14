@@ -1,6 +1,7 @@
 'use client'
 import Link from 'next/link'
 import{useState, useEffect} from 'react'
+import { useSession } from 'next-auth/react'
 
 type DataExpected = {
     m: {
@@ -17,6 +18,9 @@ type Sanitized = {
 export default function QuestionList({atomId, updateInitial}: {atomId:string, updateInitial:number}) {
     const [questions, setQuestions] = useState<Sanitized[]>();
     const [update,setUpdate] = useState(updateInitial);
+        
+    const session = useSession();
+    const admin = session.data?.user?.email === "phil_mj12@yahoo.co.uk";
 
     useEffect(()=>{
         const getQuestions =async () => {
@@ -41,7 +45,7 @@ export default function QuestionList({atomId, updateInitial}: {atomId:string, up
                             <div className='gap-3 flex px-2 py-1' key={"question"+index}>
                                 &#x2022; {item.question}
                                 <Link href={'/question/'+item.id} className='ml-auto bg-gradient-to-r from-pink-500 to-violet-500 hover:brightness-110 active:brightness-90 p-2 h-full w-fit rounded-md active:translate-x-px'>Try it</Link>
-                                <button onClick={()=>{handleDelete(item.id)}} className="bg-gradient-to-r from-pink-500 to-violet-500 hover:brightness-110 active:brightness-90 p-2 w-fit rounded-md active:translate-x-px">Delete</button>
+                                {admin&& <button onClick={()=>{handleDelete(item.id)}} className="bg-gradient-to-r from-pink-500 to-violet-500 hover:brightness-110 active:brightness-90 p-2 w-fit rounded-md active:translate-x-px">Delete</button>}
                             </div>
                         ):
                     <p>There are no questions for this atom</p>

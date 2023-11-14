@@ -1,4 +1,11 @@
+import { useSession } from "next-auth/react";
+
 function QuestionGenerator({atomId, updateList}: {atomId:string, updateList: ()=>void}) {
+        
+    const session = useSession();
+    const admin = session.data?.user?.email === "phil_mj12@yahoo.co.uk";
+
+    if(!admin) return <></>
   return (
     <div className="p-2 rounded-xl border-2 border-slate-200 bg-slate-800">
         <h1 className=" text-2xl mb-2">Question Generator</h1>

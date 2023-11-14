@@ -3,6 +3,7 @@ import NeoVis, { NeoVisEvents } from 'neovis.js'
 import React, { useEffect, useState } from 'react'
 import ContextMenu from './contextMenu';
 import EditMenu from './editAtomMenu';
+import { SessionProvider } from 'next-auth/react';
 
 type NeoVisClickEvent = {
     nodes: string[];
@@ -68,10 +69,7 @@ export default function Graph() {
         
         
       }
-      setNeoviz(new NeoVis(config));
-    },[])
-
-    if(neoviz){
+      const neoviz = new NeoVis(config)
       neoviz.render();
       neoviz.registerOnEvent("completed" as NeoVisEvents, (e:any):void=>{
         neoviz.network?.on("oncontext", async(event) => {
@@ -89,6 +87,11 @@ export default function Graph() {
           setEditting(false);
         })
       })
+      setNeoviz(neoviz);
+    },[])
+
+    if(neoviz){
+      
     }
   return (
     <>
@@ -97,6 +100,7 @@ export default function Graph() {
           className='h-screen mx-16 text-lg bg-slate-400 border-2 border-slate-100 rounded-md hover:bg-slate-300 transition duration-500' 
           onContextMenu={(e:React.MouseEvent<HTMLDivElement>)=>e.preventDefault()}> 
         </div>
+        <SessionProvider>
         {
           event.items===undefined &&
           <ContextMenu 
@@ -120,6 +124,7 @@ export default function Graph() {
         {connecting &&
           <div className='absolute top-72 mt-1 bg-slate-600 rounded-md p-1'>Click the atom that this atom depends on... <button className=' bg-violet-900 ml-10 rounded-xl w-6 h-7 font-bold hover:bg-violet-500' onClick={()=>setConnecting(false)}>X</button></div>
         }
+        </SessionProvider>
         <div className='m-4 text-pink-400'>
           <input
             className="mr-2 mt-[0.3rem] h-3.5 w-8 appearance-none rounded-[0.4375rem] bg-pink-300 before:pointer-events-none 
